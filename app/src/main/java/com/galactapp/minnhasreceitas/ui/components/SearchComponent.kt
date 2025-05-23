@@ -35,7 +35,6 @@ fun SearchComponent(onSearchClicked: (query: String) -> Unit) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White),
             value = query,
             onValueChange = {
                 if (it.isNotBlank()) {

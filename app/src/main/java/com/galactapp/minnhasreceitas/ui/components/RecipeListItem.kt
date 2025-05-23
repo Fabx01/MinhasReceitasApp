@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.vector.ImageVector
 import coil.compose.AsyncImage
 import com.galactapp.minnhasreceitas.data.model.Meal
 
@@ -38,21 +39,17 @@ fun RecipeListItem(meal: Meal) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, Color.LightGray),
-        colors = CardDefaults.cardColors(
-            Color.White
-        )
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
             if (!meal.strMealThumb.isNullOrEmpty()) {
-                AsyncImage( //coil
+                AsyncImage(
                     model = meal.strMealThumb,
+                    error = null, // Add error handling
                     contentDescription = "thumbnail",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -65,13 +62,15 @@ fun RecipeListItem(meal: Meal) {
             }
             Spacer(modifier = Modifier.padding(4.dp))
             Text(
-                text = meal.strMeal ?: "",
+                text = meal.strMeal.orEmpty(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.padding(8.dp))
             Text(
                 text = "Ingredients",
+                color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -84,6 +83,7 @@ fun RecipeListItem(meal: Meal) {
                 Column {
                     Text(
                         text = "Instructions",
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -100,9 +100,9 @@ fun RecipeListItem(meal: Meal) {
                         expanded = !expanded
                     }) {
                 Icon(
-                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                     contentDescription = "Clear",
-                    tint = Color.Black,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .align(
                             Alignment.CenterHorizontally
