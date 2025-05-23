@@ -27,49 +27,45 @@ fun SearchComponent(onSearchClicked: (query: String) -> Unit) {
     var query by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
-    Column(
+    OutlinedTextField(
+        value = query,
+        onValueChange = {
+            query = it
+            if (it.isNotBlank()) {
+                errorMessage = ""
+            }
+        },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        OutlinedTextField(
-            value = query,
-            onValueChange = {
-                query = it
-                if (it.isNotBlank()) {
-                    errorMessage = ""
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("Search") },
-            singleLine = true,
-            isError = errorMessage.isNotBlank(),
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        if (query.isNotBlank()) {
-                            onSearchClicked(query)
-                        } else {
-                            errorMessage = "Enter a query first"
-                        }
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        placeholder = { Text("Busque por uma receita...", style = MaterialTheme.typography.bodyMedium) },
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        isError = errorMessage.isNotBlank(),
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    if (query.isNotBlank()) {
+                        onSearchClicked(query)
+                    } else {
+                        errorMessage = "Digite algo para buscar"
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Clear",
-                        tint = Color.Gray
-                    )
                 }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Buscar",
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
-        )
-        if (errorMessage.isNotBlank()) {
-            Text(
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier.padding(start = 16.dp)
-            )
         }
+    )
+    if (errorMessage.isNotBlank()) {
+        Text(
+            text = errorMessage,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(start = 24.dp, top = 2.dp)
+        )
     }
 }
-

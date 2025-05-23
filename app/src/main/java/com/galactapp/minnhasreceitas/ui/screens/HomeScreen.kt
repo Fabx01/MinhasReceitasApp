@@ -24,10 +24,19 @@ fun HomeScreen(recipeViewModel: RecipeViewModel) {
     MinnhasReceitasTheme {
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("Minhas Receitas") })
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            "Minhas Receitas",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                )
             }
         ) { paddingValues ->
-            // Container for the content
             Surface(
                 modifier = Modifier
                     .fillMaxSize()
@@ -53,7 +62,6 @@ fun HomeScreen(recipeViewModel: RecipeViewModel) {
         }
     }
 
-    //
     LaunchedEffect(Unit) {
         recipeViewModel.processIntent(RecipeViewIntent.LoadRandomRecipe)
     }

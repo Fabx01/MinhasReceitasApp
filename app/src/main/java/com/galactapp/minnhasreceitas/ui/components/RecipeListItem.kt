@@ -3,6 +3,7 @@ package com.galactapp.minnhasreceitas.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +15,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,84 +36,92 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import coil.compose.AsyncImage
 import com.galactapp.minnhasreceitas.data.model.Meal
 
-
 @Composable
 fun RecipeListItem(meal: Meal) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(12.dp)
         ) {
             if (!meal.strMealThumb.isNullOrEmpty()) {
-                AsyncImage(
-                    model = meal.strMealThumb,
-                    error = null, // Add error handling
-                    contentDescription = "thumbnail",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(
-                            RoundedCornerShape(8.dp)
-                        )
-                )
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(12.dp))) {
+                    var imageLoading by remember { mutableStateOf(true) }
+                    AsyncImage(
+                        model = meal.strMealThumb,
+                        contentDescription = "thumbnail",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.matchParentSize(),
+                        onLoading = { imageLoading = true },
+                        onSuccess = { imageLoading = false },
+                        onError = { imageLoading = false }
+                    )
+                    if (imageLoading) {
+                        Box(
+                            modifier = Modifier.matchParentSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.height(32.dp))
+                        }
+                    }
+                }
             }
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = meal.strMeal.orEmpty(),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "Ingredients",
-                color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-
-                fontSize = 20.sp,
+                text = "Ingredientes",
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = getIngredients(meal)
+                text = getIngredients(meal),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Spacer(modifier = Modifier.padding(8.dp))
-
+            Spacer(modifier = Modifier.height(8.dp))
             AnimatedVisibility(visible = expanded) {
                 Column {
                     Text(
-                        text = "Instructions",
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                        fontSize = 20.sp,
+                        text = "Instruções",
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = meal.strInstructions ?: ""
+                        text = meal.strInstructions ?: "",
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
-            Column(
-                modifier =
-                Modifier
+            Box(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        expanded = !expanded
-                    }) {
+                    .clickable { expanded = !expanded }
+            ) {
                 Icon(
                     imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                    contentDescription = "Clear",
-                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .align(
-                            Alignment.CenterHorizontally
-                        )
-
+                    contentDescription = if (expanded) "Recolher" else "Expandir",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
-
         }
     }
 }

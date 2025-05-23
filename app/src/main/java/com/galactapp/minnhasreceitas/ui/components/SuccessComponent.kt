@@ -13,13 +13,7 @@ import com.galactapp.minnhasreceitas.data.model.Meal
 
 @Composable
 fun SuccessComponent(recipes: List<Meal>, onSearchClicked: (query: String) -> Unit) {
-    Column {
-        Text(
-            text = "Minhas Receitas",
-            style = androidx.compose.material3.MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(16.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+    Column(modifier = Modifier.padding(top = 8.dp)) {
         SearchComponent(onSearchClicked = onSearchClicked)
         Spacer(modifier = Modifier.height(8.dp))
         RecipesList(recipes = recipes)
@@ -31,3 +25,4 @@ fun SuccessComponent(recipes: List<Meal>, onSearchClicked: (query: String) -> Un
 fun PreviewSuccessComponent() {
     SuccessComponent(recipes = emptyList(), onSearchClicked = {})
 }
+

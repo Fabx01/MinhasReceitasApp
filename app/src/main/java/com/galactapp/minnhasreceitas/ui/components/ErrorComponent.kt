@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun ErrorComponent(message: String, onRefreshClicked: () -> Unit) {
@@ -23,15 +24,17 @@ fun ErrorComponent(message: String, onRefreshClicked: () -> Unit) {
     ) {
         Text(
             text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = onRefreshClicked,
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
-            Text(text = "Retry", color = MaterialTheme.colorScheme.onErrorContainer)
+            Text(text = "Tentar novamente", color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
+
