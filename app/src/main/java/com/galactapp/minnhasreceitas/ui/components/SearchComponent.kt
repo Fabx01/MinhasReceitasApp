@@ -33,15 +33,14 @@ fun SearchComponent(onSearchClicked: (query: String) -> Unit) {
             .padding(horizontal = 8.dp)
     ) {
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
             value = query,
             onValueChange = {
+                query = it
                 if (it.isNotBlank()) {
                     errorMessage = ""
                 }
-                query = it
             },
+            modifier = Modifier.fillMaxWidth(),
             label = { Text("Search") },
             singleLine = true,
             isError = errorMessage.isNotBlank(),
@@ -73,3 +72,4 @@ fun SearchComponent(onSearchClicked: (query: String) -> Unit) {
         }
     }
 }
+

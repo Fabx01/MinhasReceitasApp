@@ -10,17 +10,18 @@ import androidx.compose.ui.Modifier
 import com.galactapp.minnhasreceitas.ui.components.ErrorComponent
 import com.galactapp.minnhasreceitas.ui.components.LoadingComponent
 import com.galactapp.minnhasreceitas.ui.components.SuccessComponent
-import com.galactapp.minnhasreceitas.ui.theme.MinhasReceitasTheme
+import com.galactapp.minnhasreceitas.ui.theme.MinnhasReceitasTheme
 
 import com.galactapp.minnhasreceitas.ui.viewmodel.RecipeViewIntent
 import com.galactapp.minnhasreceitas.ui.viewmodel.RecipeViewModel
 import com.galactapp.minnhasreceitas.ui.viewmodel.RecipeViewState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(recipeViewModel: RecipeViewModel) {
     val state by recipeViewModel.state
 
-    MinhasReceitasTheme {
+    MinnhasReceitasTheme {
         Scaffold(
             topBar = {
                 TopAppBar(title = { Text("Minhas Receitas") })
@@ -57,3 +58,4 @@ fun HomeScreen(recipeViewModel: RecipeViewModel) {
         recipeViewModel.processIntent(RecipeViewIntent.LoadRandomRecipe)
     }
 }
+
